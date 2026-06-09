@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: authcore_ci
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore AuthCore.sln
+
+      - name: Build
+        run: dotnet build AuthCore.sln --configuration Release --no-restore
+
+      - name: Install EF Core tools
+        run: dotnet tool install --global dotnet-ef
+
+      - name: Apply migrations
+        run: dotnet ef database update --project src/AuthCore.Infrastructure --startup-project src/AuthCore.API
+        env:
+          ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=authcore_ci;Username=postgres;Password=postgres"
+          JwtSettings__Secret: "ci-secret-key-for-github-actions-at-least-32-chars!!"
+          JwtSettings__Issuer: AuthCore
+          JwtSettings__Audience: AuthCoreClients
+
+      - name: Test
+        run: dotnet test AuthCore.sln --configuration Release --no-build --verbosity normal
+        env:
+          ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=authcore_ci;Username=postgres;Password=postgres"
+          JwtSettings__Secret: "ci-secret-key-for-github-actions-at-least-32-chars!!"
+          JwtSettings__Issuer: AuthCore
+          JwtSettings__Audience: AuthCoreClients
