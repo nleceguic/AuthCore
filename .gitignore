@@ -1,0 +1,61 @@
+## .NET
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+TestResults/
+*.nupkg
+*.snupkg
+*.nuget.targets
+project.lock.json
+project.assets.json
+packages/
+.nuget/
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+artifacts/
+
+## Rider
+.idea/
+
+## VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+## Environment / secrets
+.env
+.env.local
+appsettings.Development.json
+appsettings.Local.json
+
+## Docker
+docker-compose.override.yml
+
+## Temp files
+pdf_content.txt

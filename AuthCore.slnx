@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AuthCore.API/AuthCore.API.csproj" />
+    <Project Path="src/AuthCore.Application/AuthCore.Application.csproj" />
+    <Project Path="src/AuthCore.Domain/AuthCore.Domain.csproj" />
+    <Project Path="src/AuthCore.Infrastructure/AuthCore.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AuthCore.Tests/AuthCore.Tests.csproj" />
+  </Folder>
+</Solution>
