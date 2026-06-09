@@ -1,0 +1,28 @@
+# Git
+.git
+.gitignore
+
+# Build output
+**/bin
+**/obj
+**/TestResults
+
+# IDE
+.vs
+.idea
+**/*.user
+**/*.suo
+
+# Test project (not needed in image)
+tests/
+
+# Docker files themselves
+Dockerfile
+docker-compose*.yml
+.dockerignore
+
+# Misc
+**/*.md
+AuthCore ProjectSpec.pdf
+pdf_content.txt
+AuthCore.slnx
